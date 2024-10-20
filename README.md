@@ -16,6 +16,8 @@ ODM・OEM 受託型企業で働く全体のスケジュールコントロール�
 [![トップページーじのイメージ](https://i.gyazo.com/5635ddca21450e0d56bc4449824b47ef.png)](https://gyazo.com/5635ddca21450e0d56bc4449824b47ef)
 [![スケジュール作成・編集・詳細ページのイメージ](https://i.gyazo.com/802ab72d11798f2bcbd7ba9246a73a15.png)](https://gyazo.com/802ab72d11798f2bcbd7ba9246a73a15)
 [![スケジュール管理機能のイメージ](https://i.gyazo.com/e0e37056b17dea4d37b130449003bb6e.png)](https://gyazo.com/e0e37056b17dea4d37b130449003bb6e)
+[![画面遷移図](https://i.gyazo.com/7d7f0ca856d0b9acca90cb78e465ed01.png)](https://gyazo.com/7d7f0ca856d0b9acca90cb78e465ed01)
+[![ER図](https://i.gyazo.com/5b0f543e210d80dfe2c087cac3f2bb5c.png)](https://gyazo.com/5b0f543e210d80dfe2c087cac3f2bb5c)
 
 # テーブル設計
 
