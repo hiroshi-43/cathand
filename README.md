@@ -45,10 +45,11 @@ ODM・OEM 受託型企業で働く全体のスケジュールコントロール�
 
 | Column             | Type    | Options     |
 | ------------------ | ------- | ----------- |
-| customer_name      | string  | null: false |
-| item_text          | string  | null: false |
+| customer           | string  | null: false |
+| item_name          | string  | null: false |
 | capacity           | string  | null: false |
 | schedule           | date    | null: false |
+| category_id        | integer | null: false |
 | total_task_id      | integer | null: false |
 | container_task_id  | integer | null: false |
 | package_task_id    | integer | null: false |
