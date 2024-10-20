@@ -13,6 +13,10 @@ ODM・OEM 受託型企業で働く全体のスケジュールコントロール�
 スケジュール変更の自動化を推進することでスケジュール変更業務量を減らし、  
 今まで時間がなくてできなかった顧客に寄り添った提案業務の時間を創出 していく。
 
+[![トップページーじのイメージ](https://i.gyazo.com/5635ddca21450e0d56bc4449824b47ef.png)](https://gyazo.com/5635ddca21450e0d56bc4449824b47ef)
+[![スケジュール作成・編集・詳細ページのイメージ](https://i.gyazo.com/802ab72d11798f2bcbd7ba9246a73a15.png)](https://gyazo.com/802ab72d11798f2bcbd7ba9246a73a15)
+[![スケジュール管理機能のイメージ](https://i.gyazo.com/e0e37056b17dea4d37b130449003bb6e.png)](https://gyazo.com/e0e37056b17dea4d37b130449003bb6e)
+
 # テーブル設計
 
 ## users テーブル
