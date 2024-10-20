@@ -58,5 +58,5 @@ ODM・OEM 受託型企業で働く全体のスケジュールコントロール�
 | user_id            | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :uesr
+- belongs_to :user
 
