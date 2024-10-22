@@ -1,4 +1,4 @@
-class OuterBox < ActiveHash::Base
+class InnerBoxTask < ActiveHash::Base
   self.data = [
     { id: 0, name: '---' },
     { id: 1, name: '試作UP' },
@@ -6,7 +6,8 @@ class OuterBox < ActiveHash::Base
     { id: 3, name: '出稿' },
     { id: 4, name: '校正データUP' },
     { id: 5, name: '版下校了' },
-    { id: 6, name: 'その他' }   
+    { id: 6, name: '資材納品' },
+    { id: 7, name: 'その他' }   
   ]
 
   include ActiveHash::Associations

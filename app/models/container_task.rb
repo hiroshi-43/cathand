@@ -1,4 +1,4 @@
-class Container < ActiveHash::Base
+class ContainerTask < ActiveHash::Base
   self.data = [
     { id: 0, name: '---' },
     { id: 1, name: '容器色決定' },
@@ -17,7 +17,9 @@ class Container < ActiveHash::Base
     { id: 14, name: '青焼校了' } ,
     { id: 15, name: '容器試刷UP T1' } ,
     { id: 16, name: '容器試刷UP T2' } ,
-    { id: 17, name: '容器試刷校了' } 
+    { id: 17, name: '容器試刷校了' } ,
+    { id: 18, name: '資材納品' } ,
+    { id: 19, name: 'その他' }
   ]
 
   include ActiveHash::Associations
