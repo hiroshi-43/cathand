@@ -1,0 +1,16 @@
+<div>
+  <%= form_with(model: @project, local: true) do |form| %>
+    
+    <%= form.label :category, "区分" %>
+    <%= form.collection_select(:category_id, Category.all, :id, :name, {}, {class:"select-box"}) %>
+  
+    <%= form.label :schedule, "出荷日" %>
+    <%= form.date_field :schedule %>
+
+    <%= form.label :memo, "備考欄" %>
+    <%= form.text_field :memo %>
+
+    <%= form.submit "投稿" %>
+
+  <% end %>
+</div>

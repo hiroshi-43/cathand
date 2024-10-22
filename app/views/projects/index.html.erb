@@ -2,7 +2,6 @@
   <div class = 'title'>
     CAT'S HAND
   </div>
-
   <div class = 'nav'>
     <% if user_signed_in? %>
       <ul class='lists-right' >
@@ -16,4 +15,5 @@
       </ul>
     <% end %>
   </div>
+    <%= link_to 'スケジュール作成', new_project_path %>
 </header>

@@ -11,7 +11,7 @@ class Project < ApplicationRecord
   belongs_to_active_hash :outer_box_task
   belongs_to_active_hash :lead_time
 
-  validates :category_id, :total_task_id, :container_task_id, :package_task_id, :inner_box_task_id, :outer_box_task_id, :lead_time_id, presence: true
+  validates :customer,:item_name, :capacity,:schedule, :memo, :category_id, :total_task_id, :container_task_id, :package_task_id, :inner_box_task_id, :outer_box_task_id, :lead_time_id, presence: true
 
   validates :category_id, numericality: { other_than: 1 } 
   validates :lead_time_id, numericality: { other_than: 1 } 
