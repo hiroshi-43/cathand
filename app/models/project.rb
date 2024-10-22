@@ -14,4 +14,10 @@ class Project < ApplicationRecord
   validates :category_id, :total_task_id, :container_task_id, :package_task_id, :inner_box_task_id, :outer_box_task_id, :lead_time_id, presence: true
 
   validates :category_id, numericality: { other_than: 1 } 
+  validates :lead_time_id, numericality: { other_than: 1 } 
+  validates :total_task_id, numericality: { other_than: 1 } 
+  validates :container_task_id, numericality: { other_than: 1 } 
+  validates :package_task_id, numericality: { other_than: 1 } 
+  validates :inner_box_task_id, numericality: { other_than: 1 } 
+  validates :outer_box_task_id, numericality: { other_than: 1 } 
 end
