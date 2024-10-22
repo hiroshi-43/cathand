@@ -9,8 +9,8 @@ class PackageTask < ActiveHash::Base
     { id: 6, name: '試刷UP T1' },
     { id: 7, name: '試刷UP T2' } ,
     { id: 8, name: '試刷校了' } ,
-    { id: 17, name: '資材納品' },
-    { id: 18, name: 'その他' } 
+    { id: 9, name: '資材納品' },
+    { id: 10, name: 'その他' } 
   ]
 
   include ActiveHash::Associations
