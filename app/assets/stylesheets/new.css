@@ -1,0 +1,17 @@
+
+
+.text {
+  height: 300px;
+  width: 100vw;
+  resize:none;
+  margin-bottom: 20px;
+}
+
+.btn {
+  width: 200px;
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid white;
+  background-color: orange;
+  color: white;
+}

@@ -1,16 +1,216 @@
-<div>
-  <%= form_with(model: @project, local: true) do |form| %>
-    
-    <%= form.label :category, "区分" %>
-    <%= form.collection_select(:category_id, Category.all, :id, :name, {}, {class:"select-box"}) %>
-  
-    <%= form.label :schedule, "出荷日" %>
-    <%= form.date_field :schedule %>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スケジュール作成ページ</title>
+    <script>
+        const defaultLeadTimes = {
+            productionToShipment: 14,
+            materialDeliveryToProduction: 14,
+            materialOrderToMaterialDelivery: 100,
+            orderReceiptToMaterialOrder: 5,
+            containerTestEndToOrderReceipt: 5,
+            containerTestStartToContainerTestEnd: 40,
+            containerTestRequestToContainerTestStart: 15,
+            formulationDecisionToContainerTestRequest: 3,
+            containerDecisionToContainerTestRequest: 10
+        };
 
-    <%= form.label :memo, "備考欄" %>
-    <%= form.text_field :memo %>
+        let leadTimes = { ...defaultLeadTimes };
 
-    <%= form.submit "投稿" %>
+        function calculateSchedule() {
+            let shipmentDateValue = document.getElementById("shipmentDate").value;
+            if (!shipmentDateValue) {
+                alert("出荷日を入力してください。");
+                return;
+            }
 
-  <% end %>
-</div>
+            let shipmentDate = new Date(shipmentDateValue);
+            let productionDate = new Date(shipmentDate);
+            productionDate.setDate(productionDate.getDate() - leadTimes.productionToShipment);
+            let materialDeliveryDate = new Date(productionDate);
+            materialDeliveryDate.setDate(materialDeliveryDate.getDate() - leadTimes.materialDeliveryToProduction);
+            let materialOrderDate = new Date(materialDeliveryDate);
+            materialOrderDate.setDate(materialOrderDate.getDate() - leadTimes.materialOrderToMaterialDelivery);
+            let orderReceiptDate = new Date(materialOrderDate);
+            orderReceiptDate.setDate(orderReceiptDate.getDate() - leadTimes.orderReceiptToMaterialOrder);
+            let containerTestEndDate = new Date(orderReceiptDate);
+            containerTestEndDate.setDate(containerTestEndDate.getDate() - leadTimes.containerTestEndToOrderReceipt);
+            let containerTestStartDate = new Date(containerTestEndDate);
+            containerTestStartDate.setDate(containerTestStartDate.getDate() - leadTimes.containerTestStartToContainerTestEnd);
+            let containerTestRequestDate = new Date(containerTestStartDate);
+            containerTestRequestDate.setDate(containerTestRequestDate.getDate() - leadTimes.containerTestRequestToContainerTestStart);
+            let formulationDecisionDate = new Date(containerTestRequestDate);
+            formulationDecisionDate.setDate(formulationDecisionDate.getDate() - leadTimes.formulationDecisionToContainerTestRequest);
+            let containerDecisionDate = new Date(containerTestRequestDate);
+            containerDecisionDate.setDate(containerDecisionDate.getDate() - leadTimes.containerDecisionToContainerTestRequest);
+
+            let category = document.getElementById("category").value;
+            let containerTestEndLabel = category === "1" ? "容器試験終了（化粧品）" : "容器試験終了（医薬部外品）";
+
+            setTaskRow("containerDecisionDate", containerDecisionDate, "容器決定");
+            setTaskRow("formulationDecisionDate", formulationDecisionDate, "処方決定");
+            setTaskRow("containerTestRequestDate", containerTestRequestDate, "容器試験依頼");
+            setTaskRow("containerTestStartDate", containerTestStartDate, "容器試験スタート");
+            setTaskRow("containerTestEndDate", containerTestEndDate, containerTestEndLabel);
+            setTaskRow("orderReceiptDate", orderReceiptDate, "注文書受領");
+            setTaskRow("materialOrderDate", materialOrderDate, "資材発注");
+            setTaskRow("materialDeliveryDate", materialDeliveryDate, "資材納品");
+            setTaskRow("productionDate", productionDate, "生産");
+        }
+
+        function setTaskRow(taskId, taskDate, taskName) {
+            let taskRow = document.getElementById(taskId);
+            taskRow.querySelector(".task-date").value = taskDate.toLocaleDateString();
+            taskRow.querySelector(".task-name").textContent = taskName;
+        }
+
+        function toggleTaskEdit(checkbox, taskId) {
+            let taskDateField = document.getElementById(taskId).querySelector(".task-date");
+            taskDateField.disabled = !checkbox.checked;
+        }
+
+        function updateLeadTime() {
+            leadTimes.productionToShipment = parseInt(document.getElementById("productionToShipment").value);
+            leadTimes.materialDeliveryToProduction = parseInt(document.getElementById("materialDeliveryToProduction").value);
+            leadTimes.materialOrderToMaterialDelivery = parseInt(document.getElementById("materialOrderToMaterialDelivery").value);
+            leadTimes.orderReceiptToMaterialOrder = parseInt(document.getElementById("orderReceiptToMaterialOrder").value);
+            leadTimes.containerTestEndToOrderReceipt = parseInt(document.getElementById("containerTestEndToOrderReceipt").value);
+            leadTimes.containerTestStartToContainerTestEnd = parseInt(document.getElementById("containerTestStartToContainerTestEnd").value);
+            leadTimes.containerTestRequestToContainerTestStart = parseInt(document.getElementById("containerTestRequestToContainerTestStart").value);
+            leadTimes.formulationDecisionToContainerTestRequest = parseInt(document.getElementById("formulationDecisionToContainerTestRequest").value);
+            leadTimes.containerDecisionToContainerTestRequest = parseInt(document.getElementById("containerDecisionToContainerTestRequest").value);
+        }
+
+        function toggleLeadTimeEdit() {
+            let leadTimeSection = document.getElementById("leadTimeSection");
+            if (leadTimeSection.style.display === "none") {
+                leadTimeSection.style.display = "block";
+            } else {
+                leadTimeSection.style.display = "none";
+            }
+        }
+
+        window.onload = function() {
+            document.getElementById("leadTimeSection").style.display = "none"; // 初期は非表示
+        };
+    </script>
+</head>
+<body>
+    <h1>スケジュール作成ページ</h1>
+
+    <form>
+        <label for="customerName">顧客名: </label>
+        <input type="text" id="customerName" name="customerName" required>
+        <br><br>
+
+        <label for="productName">商品名: </label>
+        <input type="text" id="productName" name="productName" required>
+        <br><br>
+
+        <label for="productVolume">容量: </label>
+        <input type="text" id="productVolume" name="productVolume" required>
+        <br><br>
+
+        <label for="category">区分を選択してください: </label>
+        <select id="category">
+            <option value="1">化粧品</option>
+            <option value="2">医薬部外品</option>
+        </select>
+
+        <br><br>
+
+        <label for="shipmentDate">出荷日を入力してください: </label>
+        <input type="date" id="shipmentDate">
+        <button type="button" onclick="calculateSchedule()">AUTO</button>
+
+        <br><br>
+
+        <table>
+            <tr id="containerDecisionDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'containerDecisionDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">容器決定</td>
+            </tr>
+            <tr id="formulationDecisionDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'formulationDecisionDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">処方決定</td>
+            </tr>
+            <tr id="containerTestRequestDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'containerTestRequestDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">容器試験依頼</td>
+            </tr>
+            <tr id="containerTestStartDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'containerTestStartDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">容器試験スタート</td>
+            </tr>
+            <tr id="containerTestEndDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'containerTestEndDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">容器試験終了（化粧品/医薬部外品）</td>
+            </tr>
+            <tr id="orderReceiptDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'orderReceiptDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">注文書受領</td>
+            </tr>
+            <tr id="materialOrderDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'materialOrderDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">資材発注</td>
+            </tr>
+            <tr id="materialDeliveryDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'materialDeliveryDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">資材納品</td>
+            </tr>
+            <tr id="productionDate">
+                <td><input type="checkbox" onchange="toggleTaskEdit(this, 'productionDate')"></td>
+                <td><input type="text" class="task-date" disabled></td>
+                <td class="task-name">生産</td>
+            </tr>
+        </table>
+    </form>
+
+    <br><br>
+
+    <button type="button" onclick="toggleLeadTimeEdit()">リードタイム編集</button>
+
+    <div id="leadTimeSection">
+        <h2>リードタイムを編集:</h2>
+        <label for="productionToShipment">生産から出荷までの日数: </label>
+        <input type="number" id="productionToShipment" value="14">
+        <br>
+        <label for="materialDeliveryToProduction">資材納品から生産までの日数: </label>
+        <input type="number" id="materialDeliveryToProduction" value="14">
+        <br>
+        <label for="materialOrderToMaterialDelivery">資材発注から資材納品までの日数: </label>
+        <input type="number" id="materialOrderToMaterialDelivery" value="100">
+        <br>
+        <label for="orderReceiptToMaterialOrder">注文書受領から資材発注までの日数: </label>
+        <input type="number" id="orderReceiptToMaterialOrder" value="5">
+        <br>
+        <label for="containerTestEndToOrderReceipt">容器試験終了から注文書受領までの日数: </label>
+        <input type="number" id="containerTestEndToOrderReceipt" value="5">
+        <br>
+        <label for="containerTestStartToContainerTestEnd">容器試験スタートから終了までの日数: </label>
+        <input type="number" id="containerTestStartToContainerTestEnd" value="40">
+        <br>
+        <label for="containerTestRequestToContainerTestStart">容器試験依頼からスタートまでの日数: </label>
+        <input type="number" id="containerTestRequestToContainerTestStart" value="15">
+        <br>
+        <label for="formulationDecisionToContainerTestRequest">処方決定から容器試験依頼までの日数: </label>
+        <input type="number" id="formulationDecisionToContainerTestRequest" value="3">
+        <br>
+        <label for="containerDecisionToContainerTestRequest">容器決定から容器試験依頼までの日数: </label>
+        <input type="number" id="containerDecisionToContainerTestRequest" value="10">
+        <br><br>
+
+        <button onclick="updateLeadTime()">リードタイムを更新</button>
+    </div>
+</body>
+</html>
